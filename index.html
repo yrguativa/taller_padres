@@ -380,10 +380,6 @@
             <div class="question-text">
                 Demuestro amor a mi hijo con palabras y acciones? <span class="required">*</span>
             </div>
-            <div class="scale-container">
-                <div class="scale-label">En desacuerdo</div>
-                <div class="scale-label">En acuerdo</div>
-            </div>
             <div class="scale-points">
                 <!-- Los puntos del 1 al 10 se generan dinámicamente -->
             </div>
@@ -402,10 +398,6 @@
         <div class="question-container" id="question-2">
             <div class="question-text">
                 Disfruto pasar tiempo con mi hijo(a)? <span class="required">*</span>
-            </div>
-            <div class="scale-container">
-                <div class="scale-label">En desacuerdo</div>
-                <div class="scale-label">En acuerdo</div>
             </div>
             <div class="scale-points">
                 <!-- Los puntos del 1 al 10 se generan dinámicamente -->
@@ -426,10 +418,6 @@
             <div class="question-text">
                 Procuro resolver los conflictos sin gritos ni violencia? <span class="required">*</span>
             </div>
-            <div class="scale-container">
-                <div class="scale-label">En desacuerdo</div>
-                <div class="scale-label">En acuerdo</div>
-            </div>
             <div class="scale-points">
                 <!-- Los puntos del 1 al 10 se generan dinámicamente -->
             </div>
@@ -448,10 +436,6 @@
         <div class="question-container" id="question-4">
             <div class="question-text">
                 Tengo paciencia cuando mi hijo(a) aprende lentamente? <span class="required">*</span>
-            </div>
-            <div class="scale-container">
-                <div class="scale-label">En desacuerdo</div>
-                <div class="scale-label">En acuerdo</div>
             </div>
             <div class="scale-points">
                 <!-- Los puntos del 1 al 10 se generan dinámicamente -->
@@ -472,10 +456,6 @@
             <div class="question-text">
                 Uso palabras que edifican y no hieren? <span class="required">*</span>
             </div>
-            <div class="scale-container">
-                <div class="scale-label">En desacuerdo</div>
-                <div class="scale-label">En acuerdo</div>
-            </div>
             <div class="scale-points">
                 <!-- Los puntos del 1 al 10 se generan dinámicamente -->
             </div>
@@ -494,10 +474,6 @@
         <div class="question-container" id="question-6">
             <div class="question-text">
                 Busco activamente el bien emocional y espiritual de mi hijo(a)? <span class="required">*</span>
-            </div>
-            <div class="scale-container">
-                <div class="scale-label">En desacuerdo</div>
-                <div class="scale-label">En acuerdo</div>
             </div>
             <div class="scale-points">
                 <!-- Los puntos del 1 al 10 se generan dinámicamente -->
@@ -518,10 +494,6 @@
             <div class="question-text">
                 Cumplo lo que prometo a mi hijo(a)? <span class="required">*</span>
             </div>
-            <div class="scale-container">
-                <div class="scale-label">En desacuerdo</div>
-                <div class="scale-label">En acuerdo</div>
-            </div>
             <div class="scale-points">
                 <!-- Los puntos del 1 al 10 se generan dinámicamente -->
             </div>
@@ -540,10 +512,6 @@
         <div class="question-container" id="question-8">
             <div class="question-text">
                 Corrijo con firmeza pero con respeto y humildad? <span class="required">*</span>
-            </div>
-            <div class="scale-container">
-                <div class="scale-label">En desacuerdo</div>
-                <div class="scale-label">En acuerdo</div>
             </div>
             <div class="scale-points">
                 <!-- Los puntos del 1 al 10 se generan dinámicamente -->
@@ -564,10 +532,6 @@
             <div class="question-text">
                 Controlo mis palabras cuando estoy molesto(a)? <span class="required">*</span>
             </div>
-            <div class="scale-container">
-                <div class="scale-label">En desacuerdo</div>
-                <div class="scale-label">En acuerdo</div>
-            </div>
             <div class="scale-points">
                 <!-- Los puntos del 1 al 10 se generan dinámicamente -->
             </div>
@@ -586,10 +550,6 @@
         <div class="question-container" id="question-10">
             <div class="question-text">
                 Busco ser un buen ejemplo para mi hijo(a) en mi comportamiento? <span class="required">*</span>
-            </div>
-            <div class="scale-container">
-                <div class="scale-label">En desacuerdo</div>
-                <div class="scale-label">En acuerdo</div>
             </div>
             <div class="scale-points">
                 <!-- Los puntos del 1 al 10 se generan dinámicamente -->
@@ -680,11 +640,11 @@
                     // Etiqueta solo para los extremos
                     const pointLabel = document.createElement('div');
                     pointLabel.className = 'point-label';
-                    if (i === 1) {
-                        pointLabel.textContent = 'En desacuerdo';
-                    } else if (i === 10) {
-                        pointLabel.textContent = 'En acuerdo';
-                    }
+                    // if (i === 1) {
+                    //     pointLabel.textContent = 'En desacuerdo';
+                    // } else if (i === 10) {
+                    //     pointLabel.textContent = 'En acuerdo';
+                    // }
                     
                     // Añadir evento para actualizar puntuación y quitar estado de no respondida
                     radioInput.addEventListener('change', function() {

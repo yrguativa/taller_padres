@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Taller de Padres - Evaluación</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #f5f7fa;
+            color: #333;
+            line-height: 1.6;
+            padding: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #4b6cb7 0%, #182848 100%);
+            color: white;
+            padding: 25px;
+            border-radius: 12px;
+            margin-bottom: 30px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .header h1 {
+            font-size: 28px;
+            margin-bottom: 5px;
+            text-align: center;
+        }
+
+        .header p {
+            text-align: center;
+            opacity: 0.9;
+            font-size: 16px;
+        }
+
+        .question-container {
+            background: white;
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 20px;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+            transition: all 0.3s ease;
+            border: 2px solid transparent;
+        }
+
+        .question-container:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .question-container.unanswered {
+            border: 2px solid #e74c3c;
+            background-color: #fff5f5;
+            box-shadow: 0 0 0 3px rgba(231, 76, 60, 0.1);
+            animation: pulse 1.5s infinite;
+        }
+
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(231, 76, 60, 0.4);
+            }
+            70% {
+                box-shadow: 0 0 0 10px rgba(231, 76, 60, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(231, 76, 60, 0);
+            }
+        }
+
+        .question-text {
+            font-size: 18px;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: #2c3e50;
+            line-height: 1.4;
+        }
+
+        .unanswered .question-text {
+            color: #e74c3c;
+        }
+
+        .required {
+            color: #e74c3c;
+        }
+
+        .unanswered-label {
+            color: #e74c3c;
+            font-size: 14px;
+            font-weight: 600;
+            margin-top: 10px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            display: none;
+        }
+
+        .unanswered .unanswered-label {
+            display: flex;
+        }
+
+        .scale-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin: 15px 0;
+        }
+
+        .scale-label {
+            font-size: 14px;
+            color: #7f8c8d;
+            font-weight: 500;
+        }
+
+        .scale-points {
+            display: flex;
+            justify-content: space-between;
+            width: 100%;
+            margin: 10px 0 20px 0;
+        }
+
+        .scale-point {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            flex: 1;
+        }
+
+        .point-number {
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 5px;
+            font-size: 16px;
+        }
+
+        .point-radio {
+            width: 22px;
+            height: 22px;
+            cursor: pointer;
+            accent-color: #3498db;
+        }
+
+        .unanswered .point-radio {
+            accent-color: #e74c3c;
+        }
+
+        .point-label {
+            font-size: 12px;
+            color: #7f8c8d;
+            text-align: center;
+            margin-top: 5px;
+        }
+
+        .points-display {
+            text-align: right;
+            font-size: 16px;
+            font-weight: 600;
+            color: #3498db;
+            margin-top: 10px;
+        }
+
+        .unanswered .points-display {
+            color: #e74c3c;
+        }
+
+        .total-container {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 30px 0;
+            text-align: center;
+            box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+            border: 2px solid #3498db;
+        }
+
+        .total-score {
+            font-size: 36px;
+            font-weight: 700;
+            color: #2c3e50;
+            margin: 10px 0;
+        }
+
+        .total-max {
+            font-size: 18px;
+            color: #7f8c8d;
+        }
+
+        .submit-btn {
+            display: block;
+            width: 100%;
+            padding: 18px;
+            background: linear-gradient(135deg, #3498db 0%, #2c3e50 100%);
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin-top: 20px;
+        }
+
+        .submit-btn:hover {
+            background: linear-gradient(135deg, #2980b9 0%, #1a252f 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .submit-btn:active {
+            transform: translateY(0);
+        }
+
+        /* Modal styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 500px;
+            padding: 30px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            animation: modalAppear 0.3s ease-out;
+        }
+
+        @keyframes modalAppear {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .modal-header {
+            text-align: center;
+            margin-bottom: 25px;
+        }
+
+        .modal-title {
+            font-size: 24px;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+
+        .modal-score {
+            font-size: 42px;
+            font-weight: 700;
+            color: #3498db;
+            margin: 15px 0;
+        }
+
+        .modal-message {
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin: 20px 0;
+            font-size: 18px;
+            line-height: 1.5;
+            text-align: center;
+            border-left: 5px solid #3498db;
+        }
+
+        .result-good {
+            border-left-color: #2ecc71;
+            background-color: #e8f8f1;
+        }
+
+        .result-medium {
+            border-left-color: #f39c12;
+            background-color: #fef9e7;
+        }
+
+        .result-low {
+            border-left-color: #e74c3c;
+            background-color: #fdedec;
+        }
+
+        .result-very-low {
+            border-left-color: #8e44ad;
+            background-color: #f4ecf7;
+        }
+
+        .result-critical {
+            border-left-color: #c0392b;
+            background-color: #fbeeee;
+        }
+
+        .modal-actions {
+            display: flex;
+            justify-content: center;
+            margin-top: 25px;
+        }
+
+        .modal-btn {
+            padding: 12px 30px;
+            background: #3498db;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .modal-btn:hover {
+            background: #2980b9;
+            transform: translateY(-2px);
+        }
+
+        .footer {
+            text-align: center;
+            margin-top: 30px;
+            color: #7f8c8d;
+            font-size: 14px;
+            padding-top: 20px;
+            border-top: 1px solid #ecf0f1;
+        }
+
+        @media (max-width: 600px) {
+            body {
+                padding: 10px;
+            }
+            
+            .header {
+                padding: 20px 15px;
+            }
+            
+            .question-container {
+                padding: 20px 15px;
+            }
+            
+            .scale-points {
+                flex-wrap: wrap;
+            }
+            
+            .scale-point {
+                flex: 0 0 20%;
+                margin-bottom: 10px;
+            }
+            
+            .modal-content {
+                width: 95%;
+                padding: 20px 15px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>Taller de Padres</h1>
+        <p>Total de puntos: <span id="total-points">0</span>/100</p>
+    </div>
+
+    <form id="parent-evaluation-form">
+        <!-- Pregunta 1 -->
+        <div class="question-container" id="question-1">
+            <div class="question-text">
+                Demuestro amor a mi hijo con palabras y acciones <span class="required">*</span>
+            </div>
+            <div class="scale-container">
+                <div class="scale-label">En desacuerdo</div>
+                <div class="scale-label">En acuerdo</div>
+            </div>
+            <div class="scale-points">
+                <!-- Los puntos del 1 al 10 se generan dinámicamente -->
+            </div>
+            <div class="unanswered-label">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#e74c3c" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="12" y1="8" x2="12" y2="12"></line>
+                    <line x1="12" y1="16" x2="12" y2="16"></line>
+                </svg>
+                Esta pregunta no ha sido respondida
+            </div>
+            <div class="points-display">Puntos: <span class="question-score">0</span>/10</div>
+        </div>
+
+        <!-- Pregunta 2 -->
+        <div class="question-container" id="question-2">
+            <div class="question-text">
+                Disfruto pasar tiempo con mi hijo(a) <span class="required">*</span>
+            </div>
+            <div class="scale-container">
+                <div class="scale-label">En desacuerdo</div>
+                <div class="scale-label">En acuerdo</div>
+            </div>
+            <div class="scale-points">
+                <!-- Los puntos del 1 al 10 se generan dinámicamente -->
+            </div>
+            <div class="unanswered-label">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#e74c3c" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="12" y1="8" x2="12" y2="12"></line>
+                    <line x1="12" y1="16" x2="12" y2="16"></line>
+                </svg>
+                Esta pregunta no ha sido respondida
+            </div>
+            <div class="points-display">Puntos: <span class="question-score">0</span>/10</div>
+        </div>
+
+        <!-- Pregunta 3 -->
+        <div class="question-container" id="question-3">
+            <div class="question-text">
+                Procuro resolver los conflictos sin gritos ni violencia <span class="required">*</span>
+            </div>
+            <div class="scale-container">
+                <div class="scale-label">En desacuerdo</div>
+                <div class="scale-label">En acuerdo</div>
+            </div>
+            <div class="scale-points">
+                <!-- Los puntos del 1 al 10 se generan dinámicamente -->
+            </div>
+            <div class="unanswered-label">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#e74c3c" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="12" y1="8" x2="12" y2="12"></line>
+                    <line x1="12" y1="16" x2="12" y2="16"></line>
+                </svg>
+                Esta pregunta no ha sido respondida
+            </div>
+            <div class="points-display">Puntos: <span class="question-score">0</span>/10</div>
+        </div>
+
+        <!-- Pregunta 4 -->
+        <div class="question-container" id="question-4">
+            <div class="question-text">
+                Tengo paciencia cuando mi hijo(a) aprende lentamente <span class="required">*</span>
+            </div>
+            <div class="scale-container">
+                <div class="scale-label">En desacuerdo</div>
+                <div class="scale-label">En acuerdo</div>
+            </div>
+            <div class="scale-points">
+                <!-- Los puntos del 1 al 10 se generan dinámicamente -->
+            </div>
+            <div class="unanswered-label">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#e74c3c" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="12" y1="8" x2="12" y2="12"></line>
+                    <line x1="12" y1="16" x2="12" y2="16"></line>
+                </svg>
+                Esta pregunta no ha sido respondida
+            </div>
+            <div class="points-display">Puntos: <span class="question-score">0</span>/10</div>
+        </div>
+
+        <!-- Pregunta 5 -->
+        <div class="question-container" id="question-5">
+            <div class="question-text">
+                Uso palabras que edifican y no hieren <span class="required">*</span>
+            </div>
+            <div class="scale-container">
+                <div class="scale-label">En desacuerdo</div>
+                <div class="scale-label">En acuerdo</div>
+            </div>
+            <div class="scale-points">
+                <!-- Los puntos del 1 al 10 se generan dinámicamente -->
+            </div>
+            <div class="unanswered-label">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#e74c3c" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="12" y1="8" x2="12" y2="12"></line>
+                    <line x1="12" y1="16" x2="12" y2="16"></line>
+                </svg>
+                Esta pregunta no ha sido respondida
+            </div>
+            <div class="points-display">Puntos: <span class="question-score">0</span>/10</div>
+        </div>
+
+        <!-- Pregunta 6 -->
+        <div class="question-container" id="question-6">
+            <div class="question-text">
+                Busco activamente el bien emocional y espiritual de mi hijo(a) <span class="required">*</span>
+            </div>
+            <div class="scale-container">
+                <div class="scale-label">En desacuerdo</div>
+                <div class="scale-label">En acuerdo</div>
+            </div>
+            <div class="scale-points">
+                <!-- Los puntos del 1 al 10 se generan dinámicamente -->
+            </div>
+            <div class="unanswered-label">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#e74c3c" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="12" y1="8" x2="12" y2="12"></line>
+                    <line x1="12" y1="16" x2="12" y2="16"></line>
+                </svg>
+                Esta pregunta no ha sido respondida
+            </div>
+            <div class="points-display">Puntos: <span class="question-score">0</span>/10</div>
+        </div>
+
+        <!-- Pregunta 7 -->
+        <div class="question-container" id="question-7">
+            <div class="question-text">
+                Cumplo lo que prometo a mi hijo(a) <span class="required">*</span>
+            </div>
+            <div class="scale-container">
+                <div class="scale-label">En desacuerdo</div>
+                <div class="scale-label">En acuerdo</div>
+            </div>
+            <div class="scale-points">
+                <!-- Los puntos del 1 al 10 se generan dinámicamente -->
+            </div>
+            <div class="unanswered-label">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#e74c3c" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="12" y1="8" x2="12" y2="12"></line>
+                    <line x1="12" y1="16" x2="12" y2="16"></line>
+                </svg>
+                Esta pregunta no ha sido respondida
+            </div>
+            <div class="points-display">Puntos: <span class="question-score">0</span>/10</div>
+        </div>
+
+        <!-- Pregunta 8 -->
+        <div class="question-container" id="question-8">
+            <div class="question-text">
+                Corrijo con firmeza pero con respeto y humildad <span class="required">*</span>
+            </div>
+            <div class="scale-container">
+                <div class="scale-label">En desacuerdo</div>
+                <div class="scale-label">En acuerdo</div>
+            </div>
+            <div class="scale-points">
+                <!-- Los puntos del 1 al 10 se generan dinámicamente -->
+            </div>
+            <div class="unanswered-label">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#e74c3c" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="12" y1="8" x2="12" y2="12"></line>
+                    <line x1="12" y1="16" x2="12" y2="16"></line>
+                </svg>
+                Esta pregunta no ha sido respondida
+            </div>
+            <div class="points-display">Puntos: <span class="question-score">0</span>/10</div>
+        </div>
+
+        <!-- Pregunta 9 -->
+        <div class="question-container" id="question-9">
+            <div class="question-text">
+                Controlo mis palabras cuando estoy molesto(a) <span class="required">*</span>
+            </div>
+            <div class="scale-container">
+                <div class="scale-label">En desacuerdo</div>
+                <div class="scale-label">En acuerdo</div>
+            </div>
+            <div class="scale-points">
+                <!-- Los puntos del 1 al 10 se generan dinámicamente -->
+            </div>
+            <div class="unanswered-label">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#e74c3c" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="12" y1="8" x2="12" y2="12"></line>
+                    <line x1="12" y1="16" x2="12" y2="16"></line>
+                </svg>
+                Esta pregunta no ha sido respondida
+            </div>
+            <div class="points-display">Puntos: <span class="question-score">0</span>/10</div>
+        </div>
+
+        <!-- Pregunta 10 -->
+        <div class="question-container" id="question-10">
+            <div class="question-text">
+                Busco ser un buen ejemplo para mi hijo(a) en mi comportamiento <span class="required">*</span>
+            </div>
+            <div class="scale-container">
+                <div class="scale-label">En desacuerdo</div>
+                <div class="scale-label">En acuerdo</div>
+            </div>
+            <div class="scale-points">
+                <!-- Los puntos del 1 al 10 se generan dinámicamente -->
+            </div>
+            <div class="unanswered-label">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#e74c3c" stroke-width="2">
+                    <circle cx="12" cy="12" r="10"></circle>
+                    <line x1="12" y1="8" x2="12" y2="12"></line>
+                    <line x1="12" y1="16" x2="12" y2="16"></line>
+                </svg>
+                Esta pregunta no ha sido respondida
+            </div>
+            <div class="points-display">Puntos: <span class="question-score">0</span>/10</div>
+        </div>
+
+        <div class="total-container">
+            <div>Puntuación Total</div>
+            <div class="total-score" id="final-score">0</div>
+            <div class="total-max">de 100 puntos</div>
+        </div>
+
+        <button type="button" id="submit-evaluation" class="submit-btn">Ver Resultados</button>
+    </form>
+
+    <!-- Modal de resultados -->
+    <div id="result-modal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Resultados de tu Evaluación</h2>
+                <div class="modal-score" id="modal-score">0</div>
+                <div>de 100 puntos</div>
+            </div>
+            
+            <div class="modal-message" id="modal-message">
+                <!-- El mensaje se insertará aquí según la puntuación -->
+            </div>
+            
+            <div class="modal-actions">
+                <button type="button" id="close-modal" class="modal-btn">Cerrar</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>Taller de Padres - Evaluación de Relación Parental</p>
+    </div>
+
+    <script>
+        // Preguntas del formulario
+        const questions = [
+            "Demuestro amor a mi hijo con palabras y acciones",
+            "Disfruto pasar tiempo con mi hijo(a)",
+            "Procuro resolver los conflictos sin gritos ni violencia",
+            "Tengo paciencia cuando mi hijo(a) aprende lentamente",
+            "Uso palabras que edifican y no hieren",
+            "Busco activamente el bien emocional y espiritual de mi hijo(a)",
+            "Cumplo lo que prometo a mi hijo(a)",
+            "Corrijo con firmeza pero con respeto y humildad",
+            "Controlo mis palabras cuando estoy molesto(a)",
+            "Busco ser un buen ejemplo para mi hijo(a) en mi comportamiento"
+        ];
+
+        // Inicializar el formulario
+        document.addEventListener('DOMContentLoaded', function() {
+            // Generar las escalas de puntuación para cada pregunta
+            const questionContainers = document.querySelectorAll('.question-container');
+            
+            questionContainers.forEach((container, index) => {
+                const scalePoints = container.querySelector('.scale-points');
+                scalePoints.innerHTML = '';
+                
+                // Crear 10 puntos (1 a 10)
+                for (let i = 1; i <= 10; i++) {
+                    const pointDiv = document.createElement('div');
+                    pointDiv.className = 'scale-point';
+                    
+                    const pointNumber = document.createElement('div');
+                    pointNumber.className = 'point-number';
+                    pointNumber.textContent = i;
+                    
+                    const radioInput = document.createElement('input');
+                    radioInput.type = 'radio';
+                    radioInput.name = `question-${index + 1}`;
+                    radioInput.value = i;
+                    radioInput.className = 'point-radio';
+                    radioInput.id = `q${index + 1}-p${i}`;
+                    
+                    // Etiqueta solo para los extremos
+                    const pointLabel = document.createElement('div');
+                    pointLabel.className = 'point-label';
+                    if (i === 1) {
+                        pointLabel.textContent = 'En desacuerdo';
+                    } else if (i === 10) {
+                        pointLabel.textContent = 'En acuerdo';
+                    }
+                    
+                    // Añadir evento para actualizar puntuación y quitar estado de no respondida
+                    radioInput.addEventListener('change', function() {
+                        updateScores();
+                        markAsAnswered(index + 1);
+                    });
+                    
+                    pointDiv.appendChild(pointNumber);
+                    pointDiv.appendChild(radioInput);
+                    pointDiv.appendChild(pointLabel);
+                    scalePoints.appendChild(pointDiv);
+                }
+            });
+            
+            // Configurar botones
+            document.getElementById('submit-evaluation').addEventListener('click', showResults);
+            document.getElementById('close-modal').addEventListener('click', closeModal);
+            
+            // Cerrar modal al hacer clic fuera de él
+            document.getElementById('result-modal').addEventListener('click', function(e) {
+                if (e.target === this) {
+                    closeModal();
+                }
+            });
+        });
+
+        // Marcar una pregunta como respondida
+        function markAsAnswered(questionNumber) {
+            const questionContainer = document.getElementById(`question-${questionNumber}`);
+            if (questionContainer) {
+                questionContainer.classList.remove('unanswered');
+            }
+        }
+
+        // Marcar una pregunta como no respondida
+        function markAsUnanswered(questionNumber) {
+            const questionContainer = document.getElementById(`question-${questionNumber}`);
+            if (questionContainer) {
+                questionContainer.classList.add('unanswered');
+            }
+        }
+
+        // Actualizar puntuaciones
+        function updateScores() {
+            let totalScore = 0;
+            const questionContainers = document.querySelectorAll('.question-container');
+            
+            questionContainers.forEach((container, index) => {
+                const selectedRadio = container.querySelector(`input[name="question-${index + 1}"]:checked`);
+                let questionScore = 0;
+                
+                if (selectedRadio) {
+                    questionScore = parseInt(selectedRadio.value);
+                }
+                
+                // Actualizar puntuación de la pregunta
+                const scoreDisplay = container.querySelector('.question-score');
+                scoreDisplay.textContent = questionScore;
+                
+                totalScore += questionScore;
+            });
+            
+            // Actualizar totales
+            document.getElementById('total-points').textContent = totalScore;
+            document.getElementById('final-score').textContent = totalScore;
+        }
+
+        // Mostrar resultados en modal
+        function showResults() {
+            // Remover todos los estilos de "no respondido" primero
+            const allQuestions = document.querySelectorAll('.question-container');
+            allQuestions.forEach(question => {
+                question.classList.remove('unanswered');
+            });
+            
+            // Verificar que todas las preguntas estén respondidas
+            const unansweredQuestions = [];
+            const questionContainers = document.querySelectorAll('.question-container');
+            
+            questionContainers.forEach((container, index) => {
+                const selectedRadio = document.querySelector(`input[name="question-${index + 1}"]:checked`);
+                if (!selectedRadio) {
+                    unansweredQuestions.push(index + 1);
+                    markAsUnanswered(index + 1);
+                }
+            });
+            
+            if (unansweredQuestions.length > 0) {
+                // Hacer scroll a la primera pregunta no respondida
+                const firstUnanswered = document.getElementById(`question-${unansweredQuestions[0]}`);
+                if (firstUnanswered) {
+                    firstUnanswered.scrollIntoView({ 
+                        behavior: 'smooth', 
+                        block: 'center' 
+                    });
+                    
+                    // Agregar un efecto de atención adicional
+                    setTimeout(() => {
+                        firstUnanswered.style.transform = 'scale(1.02)';
+                        setTimeout(() => {
+                            firstUnanswered.style.transform = '';
+                        }, 300);
+                    }, 500);
+                }
+                
+                // Mostrar mensaje de error
+                const errorMessage = unansweredQuestions.length === 1 
+                    ? `Hay 1 pregunta sin responder. Por favor, respóndela antes de ver los resultados.` 
+                    : `Hay ${unansweredQuestions.length} preguntas sin responder. Por favor, respóndelas antes de ver los resultados.`;
+                
+                alert(errorMessage);
+                return;
+            }
+            
+            // Todas las preguntas están respondidas, mostrar resultados
+            const totalScore = parseInt(document.getElementById('final-score').textContent);
+            const modalScore = document.getElementById('modal-score');
+            const modalMessage = document.getElementById('modal-message');
+            
+            // Actualizar puntuación en modal
+            modalScore.textContent = totalScore;
+            
+            // Determinar mensaje según puntuación
+            let message = '';
+            let messageClass = '';
+            
+            if (totalScore >= 80 && totalScore <= 90) {
+                message = '¡Vas por buen camino! Tu relación con tu hijo(a) es sólida y positiva. Sigue cultivando estos valores y manteniendo esta comunicación abierta y amorosa.';
+                messageClass = 'result-good';
+            } else if (totalScore >= 70 && totalScore < 80) {
+                message = 'Algunos frutos para fortalecer. Estás en un buen camino, pero hay áreas donde puedes mejorar. Reflexiona sobre las preguntas con menor puntuación y busca fortalecer esos aspectos.';
+                messageClass = 'result-medium';
+            } else if (totalScore >= 50 && totalScore < 70) {
+                message = 'Necesitas prestar más atención y hacer cambios. Hay aspectos importantes de la relación con tu hijo(a) que requieren tu atención. Considera buscar apoyo para fortalecer estas áreas.';
+                messageClass = 'result-low';
+            } else if (totalScore >= 40 && totalScore < 50) {
+                message = 'Fortalece tu relación con Dios y con tu hijo(a). Este es un momento para reflexionar profundamente y buscar guía espiritual. La relación con tu hijo(a) necesita atención urgente y transformación.';
+                messageClass = 'result-very-low';
+            } else if (totalScore < 40) {
+                message = 'Cambios urgentes y buscar apoyo. Es importante que busques ayuda profesional o pastoral para transformar la dinámica familiar. Tu hijo(a) necesita un ambiente más saludable y amoroso.';
+                messageClass = 'result-critical';
+            } else if (totalScore > 90) {
+                message = '¡Excelente! Tu relación con tu hijo(a) es excepcional. Continúa con este maravilloso trabajo y sé un ejemplo para otros padres.';
+                messageClass = 'result-good';
+            }
+            
+            // Aplicar mensaje y clase
+            modalMessage.textContent = message;
+            modalMessage.className = `modal-message ${messageClass}`;
+            
+            // Mostrar modal
+            document.getElementById('result-modal').style.display = 'flex';
+        }
+
+        // Cerrar modal
+        function closeModal() {
+            document.getElementById('result-modal').style.display = 'none';
+        }
+
+        // Inicializar actualización de puntuación
+        updateScores();
+    </script>
+</body>
+</html>
